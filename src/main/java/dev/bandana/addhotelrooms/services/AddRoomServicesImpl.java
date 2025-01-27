@@ -9,6 +9,8 @@ import dev.bandana.addhotelrooms.models.UserType;
 import dev.bandana.addhotelrooms.repositories.RoomRepository;
 import dev.bandana.addhotelrooms.repositories.UserRepository;
 
+import java.util.List;
+
 public class AddRoomServicesImpl implements AddRoomService{
 
     RoomRepository repository;
@@ -18,6 +20,19 @@ public class AddRoomServicesImpl implements AddRoomService{
         this.repository = repository;
         this.userRepository = userRepository;
     }
+
+    @Override
+    public List<Room> getRooms(String roomType) throws UnAuthorizedAccess, UserNotFoundException {
+        if(roomType==null){
+            return repository.getRooms();
+        }
+        if(!roomType.equalsIgnoreCase(RoomType.DELUXE.name()) && !roomType.equalsIgnoreCase(RoomType.SUPER_DELUXE.name()) && !roomType.equalsIgnoreCase(RoomType.SUITE.name())){
+            return  null;
+        }
+        List<Room> roomList = repository.getRoomsByRoomType(RoomType.valueOf(roomType));
+        return roomList;
+    }
+
     @Override
     public Room addRoom(long userId, String name, String description, double price, String roomType) throws UserNotFoundException, UnAuthorizedAccess {
         User user = userRepository.findById(userId).orElse(null);

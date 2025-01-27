@@ -4,7 +4,9 @@ import dev.bandana.addhotelrooms.exceptions.UnAuthorizedAccess;
 import dev.bandana.addhotelrooms.exceptions.UserNotFoundException;
 import dev.bandana.addhotelrooms.models.Room;
 
-public interface AddRoomService {
+import java.util.List;
 
+public interface AddRoomService {
+    List<Room> getRooms(String roomType) throws UnAuthorizedAccess,UserNotFoundException;
     Room addRoom(long userId, String name, String description, double price, String roomType) throws UserNotFoundException, UnAuthorizedAccess, UnAuthorizedAccess;
 }
